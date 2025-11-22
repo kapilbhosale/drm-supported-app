@@ -1,33 +1,45 @@
 !macro customInstall
-  # Close the application if it's running
-  DetailPrint "Checking for running application..."
-  nsExec::ExecToLog '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --quit'
-
-  # Wait for the application to close
-  Sleep 2000
-
-  # Kill any remaining processes by name
-  nsExec::ExecToLog 'taskkill /f /im "${APP_EXECUTABLE_FILENAME}" /t'
-  nsExec::ExecToLog 'taskkill /f /im "electron.exe" /t'
-
+  # Close the application if it's running during installation
+  DetailPrint "Ensuring application is closed..."
+  
+  # Try multiple process name variations using nsExec
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App.exe" /t /f'
+  Pop $0
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq unique-academy-app.exe" /t /f'
+  Pop $0
+  
+  # Wait for processes to terminate
   Sleep 1000
 !macroend
 
 !macro customUnInstall
   # Close the application if it's running before uninstalling
   DetailPrint "Closing application before uninstall..."
-  nsExec::ExecToLog '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --quit'
-
-  # Wait for the application to close
-  Sleep 2000
-
-  # Kill any remaining processes
-  nsExec::ExecToLog 'taskkill /f /im "${APP_EXECUTABLE_FILENAME}" /t'
-  nsExec::ExecToLog 'taskkill /f /im "electron.exe" /t'
-
+  
+  # Try to gracefully close first
+  nsExec::ExecToStack '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --quit'
+  Pop $0
+  Sleep 1000
+  
+  # Force kill if still running
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App.exe" /t /f'
+  Pop $0
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq unique-academy-app.exe" /t /f'
+  Pop $0
+  
   Sleep 1000
 !macroend
 
 !macro customInit
-  # Basic initialization - no process checking to avoid plugin dependencies
+  # Kill any running instances before installation starts
+  DetailPrint "Checking for running application instances..."
+  
+  # Use nsExec to run taskkill commands silently
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App.exe" /t /f'
+  Pop $0
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq unique-academy-app.exe" /t /f'
+  Pop $0
+  
+  # Wait a bit for processes to terminate
+  Sleep 1000
 !macroend

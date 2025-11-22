@@ -1,6 +1,6 @@
 {
   "name": "unique-academy-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Unique Academy Desktop Application",
   "main": "main.js",
   "scripts": {
@@ -40,11 +40,13 @@
       "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/icon.ico"
     },
     "mac": {
       "target": "dmg",
-      "category": "public.app-category.education"
+      "category": "public.app-category.education",
+      "icon": "assets/icon.icns"
     },
     "nsis": {
       "guid": "unique-academy-app-guid-12345",
@@ -56,13 +58,21 @@
       "shortcutName": "Unique Academy App",
       "include": "scripts/installer.nsh",
       "deleteAppDataOnUninstall": false,
-      "runAfterFinish": true,
-      "artifactName": "${productName}-Setup-${version}.${ext}"
+      "runAfterFinish": false,
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "allowElevation": true
     },
     "directories": {
       "buildResources": "build",
       "output": "dist"
     },
+    "files": [
+      "main.js",
+      "node_modules/**/*",
+      "package.json",
+      "assets/**/*",
+      "scripts/**/*"
+    ],
     "asar": true,
     "publish": null
   }

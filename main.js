@@ -8,6 +8,8 @@ if (process.argv.includes('--quit')) {
   process.exit(0);
 }
 
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+
 function getMachineInfo() {
   const networkInterfaces = os.networkInterfaces();
   const allMacs = [];
@@ -42,30 +44,65 @@ function getMachineInfo() {
 }
 
 function injectLocalStorage(webContents, machineInfo) {
+  // Escape single quotes in values to prevent script injection
+  const escapeValue = (value) => String(value).replace(/'/g, "\\'");
+  
   const script = `
-    localStorage.setItem('machineName', '${machineInfo.machineName}');
-    localStorage.setItem('macAddress', '${machineInfo.macAddress}');
-    localStorage.setItem('machineId', '${machineInfo.machineId}');
-    localStorage.setItem('allMacs', '${machineInfo.allMacs}');
-    localStorage.setItem('os', '${machineInfo.os}');
-    localStorage.setItem('flag', '${machineInfo.flag}');
-    localStorage.setItem('appVersion', '${machineInfo.appVersion}');
+    localStorage.setItem('machineName', '${escapeValue(machineInfo.machineName)}');
+    localStorage.setItem('macAddress', '${escapeValue(machineInfo.macAddress)}');
+    localStorage.setItem('machineId', '${escapeValue(machineInfo.machineId)}');
+    localStorage.setItem('allMacs', '${escapeValue(machineInfo.allMacs)}');
+    localStorage.setItem('os', '${escapeValue(machineInfo.os)}');
+    localStorage.setItem('flag', '${escapeValue(machineInfo.flag)}');
+    localStorage.setItem('appVersion', '${escapeValue(machineInfo.appVersion)}');
   `;
   webContents.executeJavaScript(script);
 }
 
+function setCustomUserAgent(webContents) {
+  const baseUA = webContents.getUserAgent();
+  webContents.setUserAgent(`${baseUA} Unique Academy Desktop Application`);
+}
+
+const windowOptions = {
+  width: 1200,
+  height: 800,
+  webPreferences: {
+    nodeIntegration: false,
+    sandbox: true,
+    contextIsolation: true,
+    webSecurity: true,
+    plugins: true,
+    devTools: false,
+  },
+};
+
 function createWindow() {
   const machineInfo = getMachineInfo();
   
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true
-    }
+  const win = new BrowserWindow(windowOptions);
+  
+  // Enable screenshot prevention (content protection)
+  win.setContentProtection(true);
+
+  // Set custom user agent
+  setCustomUserAgent(win.webContents);
+
+  // Handle window open requests (for popups, etc.)
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    const childWindow = new BrowserWindow({
+      ...windowOptions,
+      parent: win,
+      modal: false,
+      show: true,
+    });
+    childWindow.setContentProtection(true);
+    setCustomUserAgent(childWindow.webContents);
+    childWindow.loadURL(url);
+    return { action: 'deny' };
   });
 
-  // Inject localStorage before page loads
+  // Inject localStorage after page loads
   win.webContents.on('did-finish-load', () => {
     injectLocalStorage(win.webContents, machineInfo);
   });
