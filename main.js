@@ -166,10 +166,7 @@ function createWindow() {
     
     // For normal close on macOS, prevent default and hide window
     if (process.platform === 'darwin') {
-      if (!isQuittingForUpdate) {
-        event.preventDefault();
-        win.hide();
-      }
+      Menu.setApplicationMenu(null);
     }
   });
 
