@@ -92,7 +92,7 @@ function getMachineInfo() {
     allMacs: allMacs.join(','),
     os: os.platform(),
     flag: process.platform === 'win32' ? 'win' : process.platform === 'darwin' ? 'mac' : 'linux',
-    appVersion: '8081'
+    appVersion: '8085'
   };
 }
 
