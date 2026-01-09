@@ -51,9 +51,10 @@
       "icon": "assets/icon.ico"
     },
     "appx": {
-      "identityName": "UniqueAcademyApp",
+      "identityName": "UniqueAcademyForCommerce.UniqueAcademyForCommerceA",
       "publisher": "CN=FCAD763D-A049-4D11-9DEB-63281B0F0EE8",
       "publisherDisplayName": "Unique Academy For Commerce",
+      "displayName": "Unique Academy For Commerce App",
       "applicationId": "UniqueAcademyApp"
     },
     "mac": {
