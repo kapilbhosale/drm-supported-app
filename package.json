@@ -1,6 +1,6 @@
 {
   "name": "unique-academy-app",
-  "version": "1.0.1",
+  "version": "6.1.0",
   "description": "Unique Academy Desktop Application",
   "main": "main.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win --x64",
+    "dist:store": "electron-builder --win appx --x64",
     "dist:mac": "electron-builder --mac --x64",
     "watch": "nodemon --watch main.js --exec npm start",
     "build": "electron-builder build --win --publish never"
@@ -43,8 +44,16 @@
       "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        "nsis",
+        "appx"
+      ],
       "icon": "assets/icon.ico"
+    },
+    "appx": {
+      "identityName": "UniqueAcademyApp",
+      "publisher": "CN=YOUR_PUBLISHER_NAME",
+      "applicationId": "UniqueAcademyApp"
     },
     "mac": {
       "target": "dmg",
