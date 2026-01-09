@@ -37,7 +37,7 @@
   },
   "build": {
     "appId": "com.uniqueacademy.app",
-    "productName": "Unique Academy App",
+    "productName": "Unique Academy App V6.1",
     "afterPack": "scripts/evs-sign.js",
     "electronDownload": {
       "mirror": "https://github.com/castlabs/electron-releases/releases/download/v"
@@ -58,7 +58,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Unique Academy App",
+      "shortcutName": "Unique Academy App V6.1",
       "include": "scripts/installer.nsh",
       "deleteAppDataOnUninstall": false,
       "runAfterFinish": false,

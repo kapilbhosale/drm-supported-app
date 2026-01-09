@@ -12,7 +12,7 @@ if (process.argv.includes('--quit')) {
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 // Set app name
-app.setName('Unique Academy App');
+app.setName('Unique Academy App V6.1');
 
 // Track main window and update state
 let mainWindow = null;
@@ -27,13 +27,13 @@ autoUpdater.on('update-downloaded', () => {
   if (process.platform === 'win32') {
     // Set flag to allow window to close immediately
     isQuittingForUpdate = true;
-    
+
     // Close the main window immediately to allow installer to proceed
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.removeAllListeners('close');
       mainWindow.close();
     }
-    
+
     // Wait a short delay, then quit and install
     setTimeout(() => {
       autoUpdater.quitAndInstall(false, true);
@@ -99,7 +99,7 @@ function getMachineInfo() {
 function injectLocalStorage(webContents, machineInfo) {
   // Escape single quotes in values to prevent script injection
   const escapeValue = (value) => String(value).replace(/'/g, "\\'");
-  
+
   const script = `
     localStorage.setItem('machineName', '${escapeValue(machineInfo.machineName)}');
     localStorage.setItem('macAddress', '${escapeValue(machineInfo.macAddress)}');
@@ -132,10 +132,10 @@ const windowOptions = {
 
 function createWindow() {
   const machineInfo = getMachineInfo();
-  
+
   const win = new BrowserWindow(windowOptions);
   mainWindow = win;
-  
+
   // Enable screenshot prevention (content protection)
   win.setContentProtection(true);
 
@@ -163,7 +163,7 @@ function createWindow() {
       mainWindow = null;
       return;
     }
-    
+
     // For normal close on macOS, prevent default and hide window
     if (process.platform === 'darwin') {
       Menu.setApplicationMenu(null);
@@ -225,13 +225,13 @@ function showAboutDialog(mainWindow) {
 app.whenReady().then(async () => {
   await components.whenReady();
   createWindow();
-  
+
   // Check for updates after app is ready
   if (!app.isPackaged) {
     console.log('Skipping auto-update check in development mode');
   } else {
     autoUpdater.checkForUpdates();
-    
+
     // Check for updates periodically (every 4 hours)
     setInterval(() => {
       autoUpdater.checkForUpdates();
@@ -245,7 +245,7 @@ app.on('window-all-closed', () => {
     app.quit();
     return;
   }
-  
+
   if (process.platform !== 'darwin') {
     app.quit();
   }

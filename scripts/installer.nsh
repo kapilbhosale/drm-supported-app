@@ -3,7 +3,7 @@
   DetailPrint "Ensuring application is closed..."
   
   # Try multiple process name variations using nsExec
-  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App.exe" /t /f'
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App V6.1.exe" /t /f'
   Pop $0
   nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq unique-academy-app.exe" /t /f'
   Pop $0
@@ -22,7 +22,7 @@
   Sleep 1000
   
   # Force kill if still running
-  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App.exe" /t /f'
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App V6.1.exe" /t /f'
   Pop $0
   nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq unique-academy-app.exe" /t /f'
   Pop $0
@@ -35,7 +35,7 @@
   DetailPrint "Checking for running application instances..."
   
   # Use nsExec to run taskkill commands silently
-  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App.exe" /t /f'
+  nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq Unique Academy App V6.1.exe" /t /f'
   Pop $0
   nsExec::ExecToStack 'taskkill /fi "IMAGENAME eq unique-academy-app.exe" /t /f'
   Pop $0
