@@ -14,7 +14,7 @@
     "build": "electron-builder build --win --publish never"
   },
   "keywords": [],
-  "author": "",
+  "author": "Unique Academy",
   "license": "ISC",
   "dependencies": {
     "electron-updater": "^6.1.7"
@@ -52,7 +52,8 @@
     },
     "appx": {
       "identityName": "UniqueAcademyApp",
-      "publisher": "CN=YOUR_PUBLISHER_NAME",
+      "publisher": "CN=FCAD763D-A049-4D11-9DEB-63281B0F0EE8",
+      "publisherDisplayName": "Unique Academy For Commerce",
       "applicationId": "UniqueAcademyApp"
     },
     "mac": {
